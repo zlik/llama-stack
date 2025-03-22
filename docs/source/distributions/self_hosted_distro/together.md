@@ -22,7 +22,7 @@ The `llamastack/distribution-together` distribution consists of the following pr
 | safety | `inline::llama-guard` |
 | scoring | `inline::basic`, `inline::llm-as-judge`, `inline::braintrust` |
 | telemetry | `inline::meta-reference` |
-| tool_runtime | `remote::brave-search`, `remote::tavily-search`, `inline::code-interpreter`, `inline::rag-runtime`, `remote::model-context-protocol` |
+| tool_runtime | `remote::brave-search`, `remote::tavily-search`, `inline::code-interpreter`, `inline::rag-runtime`, `remote::model-context-protocol`, `remote::wolfram-alpha` |
 | vector_io | `inline::faiss`, `remote::chromadb`, `remote::pgvector` |
 
 
@@ -30,24 +30,24 @@ The `llamastack/distribution-together` distribution consists of the following pr
 
 The following environment variables can be configured:
 
-- `LLAMA_STACK_PORT`: Port for the Llama Stack distribution server (default: `5001`)
+- `LLAMA_STACK_PORT`: Port for the Llama Stack distribution server (default: `8321`)
 - `TOGETHER_API_KEY`: Together.AI API Key (default: ``)
 
 ### Models
 
 The following models are available by default:
 
-- `meta-llama/Llama-3.1-8B-Instruct`
-- `meta-llama/Llama-3.1-70B-Instruct`
-- `meta-llama/Llama-3.1-405B-Instruct-FP8`
-- `meta-llama/Llama-3.2-3B-Instruct`
-- `meta-llama/Llama-3.2-11B-Vision-Instruct`
-- `meta-llama/Llama-3.2-90B-Vision-Instruct`
-- `meta-llama/Llama-3.3-70B-Instruct`
-- `meta-llama/Llama-Guard-3-8B`
-- `meta-llama/Llama-Guard-3-11B-Vision`
-- `togethercomputer/m2-bert-80M-8k-retrieval`
-- `togethercomputer/m2-bert-80M-32k-retrieval`
+- `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo (aliases: meta-llama/Llama-3.1-8B-Instruct)`
+- `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo (aliases: meta-llama/Llama-3.1-70B-Instruct)`
+- `meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo (aliases: meta-llama/Llama-3.1-405B-Instruct-FP8)`
+- `meta-llama/Llama-3.2-3B-Instruct-Turbo (aliases: meta-llama/Llama-3.2-3B-Instruct)`
+- `meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo (aliases: meta-llama/Llama-3.2-11B-Vision-Instruct)`
+- `meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo (aliases: meta-llama/Llama-3.2-90B-Vision-Instruct)`
+- `meta-llama/Llama-3.3-70B-Instruct-Turbo (aliases: meta-llama/Llama-3.3-70B-Instruct)`
+- `meta-llama/Meta-Llama-Guard-3-8B (aliases: meta-llama/Llama-Guard-3-8B)`
+- `meta-llama/Llama-Guard-3-11B-Vision-Turbo (aliases: meta-llama/Llama-Guard-3-11B-Vision)`
+- `togethercomputer/m2-bert-80M-8k-retrieval `
+- `togethercomputer/m2-bert-80M-32k-retrieval `
 
 
 ### Prerequisite: API Keys
@@ -64,9 +64,10 @@ You can do this via Conda (build code) or Docker which has a pre-built image.
 This method allows you to get started quickly without having to build the distribution code.
 
 ```bash
-LLAMA_STACK_PORT=5001
+LLAMA_STACK_PORT=8321
 docker run \
   -it \
+  --pull always \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   llamastack/distribution-together \
   --port $LLAMA_STACK_PORT \

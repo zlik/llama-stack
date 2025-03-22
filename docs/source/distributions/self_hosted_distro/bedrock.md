@@ -28,15 +28,15 @@ The `llamastack/distribution-bedrock` distribution consists of the following pro
 
 The following environment variables can be configured:
 
-- `LLAMA_STACK_PORT`: Port for the Llama Stack distribution server (default: `5001`)
+- `LLAMA_STACK_PORT`: Port for the Llama Stack distribution server (default: `8321`)
 
 ### Models
 
 The following models are available by default:
 
-- `meta-llama/Llama-3.1-8B-Instruct (meta.llama3-1-8b-instruct-v1:0)`
-- `meta-llama/Llama-3.1-70B-Instruct (meta.llama3-1-70b-instruct-v1:0)`
-- `meta-llama/Llama-3.1-405B-Instruct-FP8 (meta.llama3-1-405b-instruct-v1:0)`
+- `meta.llama3-1-8b-instruct-v1:0 (aliases: meta-llama/Llama-3.1-8B-Instruct)`
+- `meta.llama3-1-70b-instruct-v1:0 (aliases: meta-llama/Llama-3.1-70B-Instruct)`
+- `meta.llama3-1-405b-instruct-v1:0 (aliases: meta-llama/Llama-3.1-405B-Instruct-FP8)`
 
 
 ### Prerequisite: API Keys
@@ -53,9 +53,10 @@ You can do this via Conda (build code) or Docker which has a pre-built image.
 This method allows you to get started quickly without having to build the distribution code.
 
 ```bash
-LLAMA_STACK_PORT=5001
+LLAMA_STACK_PORT=8321
 docker run \
   -it \
+  --pull always \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   llamastack/distribution-bedrock \
   --port $LLAMA_STACK_PORT \

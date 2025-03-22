@@ -5,15 +5,15 @@
 # the root directory of this source tree.
 
 import argparse
-import logging
 import os
 from pathlib import Path
 
 from llama_stack.cli.subcommand import Subcommand
+from llama_stack.log import get_logger
 
 REPO_ROOT = Path(__file__).parent.parent.parent.parent
 
-logger = logging.getLogger(__name__)
+logger = get_logger(name=__name__, category="server")
 
 
 class StackRun(Subcommand):
@@ -23,7 +23,7 @@ class StackRun(Subcommand):
             "run",
             prog="llama stack run",
             description="""Start the server for a Llama Stack Distribution. You should have already built (or downloaded) and configured the distribution.""",
-            formatter_class=argparse.RawTextHelpFormatter,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
         self._add_arguments()
         self.parser.set_defaults(func=self._run_stack_run_cmd)
@@ -37,12 +37,13 @@ class StackRun(Subcommand):
         self.parser.add_argument(
             "--port",
             type=int,
-            help="Port to run the server on. Defaults to 8321",
+            help="Port to run the server on. It can also be passed via the env var LLAMA_STACK_PORT.",
             default=int(os.getenv("LLAMA_STACK_PORT", 8321)),
         )
         self.parser.add_argument(
             "--image-name",
             type=str,
+            default=os.environ.get("CONDA_DEFAULT_ENV"),
             help="Name of the image to run. Defaults to the current conda environment",
         )
         self.parser.add_argument(
@@ -79,13 +80,9 @@ class StackRun(Subcommand):
     def _run_stack_run_cmd(self, args: argparse.Namespace) -> None:
         import yaml
 
-        from llama_stack.distribution.build import ImageType
         from llama_stack.distribution.configure import parse_and_maybe_upgrade_config
-        from llama_stack.distribution.utils.config_dirs import (
-            BUILDS_BASE_DIR,
-            DISTRIBS_BASE_DIR,
-        )
-        from llama_stack.distribution.utils.exec import formulate_run_args, run_with_pty
+        from llama_stack.distribution.utils.config_dirs import DISTRIBS_BASE_DIR
+        from llama_stack.distribution.utils.exec import formulate_run_args, run_command
 
         config_file = Path(args.config)
         has_yaml_suffix = args.config.endswith(".yaml")
@@ -96,14 +93,6 @@ class StackRun(Subcommand):
             config_file = Path(REPO_ROOT) / "llama_stack" / "templates" / args.config / "run.yaml"
             if config_file.exists():
                 template_name = args.config
-
-        if not config_file.exists() and not has_yaml_suffix:
-            # check if it's a build config saved to conda dir
-            config_file = Path(BUILDS_BASE_DIR / ImageType.conda.value / f"{args.config}-run.yaml")
-
-        if not config_file.exists() and not has_yaml_suffix:
-            # check if it's a build config saved to container dir
-            config_file = Path(BUILDS_BASE_DIR / ImageType.container.value / f"{args.config}-run.yaml")
 
         if not config_file.exists() and not has_yaml_suffix:
             # check if it's a build config saved to ~/.llama dir
@@ -147,4 +136,4 @@ class StackRun(Subcommand):
 
         if args.tls_keyfile and args.tls_certfile:
             run_args.extend(["--tls-keyfile", args.tls_keyfile, "--tls-certfile", args.tls_certfile])
-        run_with_pty(run_args)
+        run_command(run_args)

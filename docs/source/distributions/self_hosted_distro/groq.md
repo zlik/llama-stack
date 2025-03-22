@@ -30,18 +30,18 @@ The `llamastack/distribution-groq` distribution consists of the following provid
 
 The following environment variables can be configured:
 
-- `LLAMASTACK_PORT`: Port for the Llama Stack distribution server (default: `5001`)
+- `LLAMASTACK_PORT`: Port for the Llama Stack distribution server (default: `8321`)
 - `GROQ_API_KEY`: Groq API Key (default: ``)
 
 ### Models
 
 The following models are available by default:
 
-- `meta-llama/Llama-3.1-8B-Instruct (llama3-8b-8192)`
-- `meta-llama/Llama-3.1-8B-Instruct (llama-3.1-8b-instant)`
-- `meta-llama/Llama-3-70B-Instruct (llama3-70b-8192)`
-- `meta-llama/Llama-3.3-70B-Instruct (llama-3.3-70b-versatile)`
-- `meta-llama/Llama-3.2-3B-Instruct (llama-3.2-3b-preview)`
+- `groq/llama3-8b-8192 (aliases: meta-llama/Llama-3.1-8B-Instruct)`
+- `groq/llama-3.1-8b-instant `
+- `groq/llama3-70b-8192 (aliases: meta-llama/Llama-3-70B-Instruct)`
+- `groq/llama-3.3-70b-versatile (aliases: meta-llama/Llama-3.3-70B-Instruct)`
+- `groq/llama-3.2-3b-preview (aliases: meta-llama/Llama-3.2-3B-Instruct)`
 
 
 ### Prerequisite: API Keys
@@ -58,9 +58,10 @@ You can do this via Conda (build code) or Docker which has a pre-built image.
 This method allows you to get started quickly without having to build the distribution code.
 
 ```bash
-LLAMA_STACK_PORT=5001
+LLAMA_STACK_PORT=8321
 docker run \
   -it \
+  --pull always \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   llamastack/distribution-groq \
   --port $LLAMA_STACK_PORT \

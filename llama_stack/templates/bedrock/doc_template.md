@@ -28,7 +28,7 @@ The following environment variables can be configured:
 The following models are available by default:
 
 {% for model in default_models %}
-- `{{ model.model_id }} ({{ model.provider_model_id }})`
+- `{{ model.model_id }} {{ model.doc_string }}`
 {% endfor %}
 {% endif %}
 
@@ -47,9 +47,10 @@ You can do this via Conda (build code) or Docker which has a pre-built image.
 This method allows you to get started quickly without having to build the distribution code.
 
 ```bash
-LLAMA_STACK_PORT=5001
+LLAMA_STACK_PORT=8321
 docker run \
   -it \
+  --pull always \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   llamastack/distribution-{{ name }} \
   --port $LLAMA_STACK_PORT \

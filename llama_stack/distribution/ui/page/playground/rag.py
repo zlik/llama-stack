@@ -5,12 +5,10 @@
 # the root directory of this source tree.
 
 import streamlit as st
-from llama_stack_client.lib.agents.agent import Agent
-from llama_stack_client.lib.agents.event_logger import EventLogger
-from llama_stack_client.types.agent_create_params import AgentConfig
-from llama_stack_client.types.memory_insert_params import Document
-from modules.api import llama_stack_api
-from modules.utils import data_url_from_file
+from llama_stack_client import Agent, AgentEventLogger, RAGDocument
+
+from llama_stack.distribution.ui.modules.api import llama_stack_api
+from llama_stack.distribution.ui.modules.utils import data_url_from_file
 
 
 def rag_chat_page():
@@ -35,7 +33,7 @@ def rag_chat_page():
             )
             if st.button("Create Vector Database"):
                 documents = [
-                    Document(
+                    RAGDocument(
                         document_id=uploaded_file.name,
                         content=data_url_from_file(uploaded_file),
                     )
@@ -124,26 +122,22 @@ def rag_chat_page():
     else:
         strategy = {"type": "greedy"}
 
-    agent_config = AgentConfig(
+    agent = Agent(
+        llama_stack_api.client,
         model=selected_model,
         instructions=system_prompt,
         sampling_params={
             "strategy": strategy,
         },
-        toolgroups=[
+        tools=[
             dict(
                 name="builtin::rag/knowledge_search",
                 args={
-                    "vector_db_ids": [vector_db_id for vector_db_id in selected_vector_dbs],
+                    "vector_db_ids": list(selected_vector_dbs),
                 },
             )
         ],
-        tool_choice="auto",
-        tool_prompt_format="json",
-        enable_session_persistence=False,
     )
-
-    agent = Agent(llama_stack_api.client, agent_config)
     session_id = agent.create_session("rag-session")
 
     # Chat input
@@ -171,7 +165,7 @@ def rag_chat_page():
             message_placeholder = st.empty()
             full_response = ""
             retrieval_response = ""
-            for log in EventLogger().log(response):
+            for log in AgentEventLogger().log(response):
                 log.print()
                 if log.role == "tool_execution":
                     retrieval_response += log.content.replace("====", "").strip()

@@ -27,22 +27,22 @@ The `llamastack/distribution-sambanova` distribution consists of the following p
 
 The following environment variables can be configured:
 
-- `LLAMASTACK_PORT`: Port for the Llama Stack distribution server (default: `5001`)
+- `LLAMASTACK_PORT`: Port for the Llama Stack distribution server (default: `8321`)
 - `SAMBANOVA_API_KEY`: SambaNova.AI API Key (default: ``)
 
 ### Models
 
 The following models are available by default:
 
-- `meta-llama/Llama-3.1-8B-Instruct (Meta-Llama-3.1-8B-Instruct)`
-- `meta-llama/Llama-3.1-70B-Instruct (Meta-Llama-3.1-70B-Instruct)`
-- `meta-llama/Llama-3.1-405B-Instruct-FP8 (Meta-Llama-3.1-405B-Instruct)`
-- `meta-llama/Llama-3.2-1B-Instruct (Meta-Llama-3.2-1B-Instruct)`
-- `meta-llama/Llama-3.2-3B-Instruct (Meta-Llama-3.2-3B-Instruct)`
-- `meta-llama/Llama-3.3-70B-Instruct (Meta-Llama-3.3-70B-Instruct)`
-- `meta-llama/Llama-3.2-11B-Vision-Instruct (Llama-3.2-11B-Vision-Instruct)`
-- `meta-llama/Llama-3.2-90B-Vision-Instruct (Llama-3.2-90B-Vision-Instruct)`
-- `meta-llama/Llama-Guard-3-8B (Meta-Llama-Guard-3-8B)`
+- `Meta-Llama-3.1-8B-Instruct (aliases: meta-llama/Llama-3.1-8B-Instruct)`
+- `Meta-Llama-3.1-70B-Instruct (aliases: meta-llama/Llama-3.1-70B-Instruct)`
+- `Meta-Llama-3.1-405B-Instruct (aliases: meta-llama/Llama-3.1-405B-Instruct-FP8)`
+- `Meta-Llama-3.2-1B-Instruct (aliases: meta-llama/Llama-3.2-1B-Instruct)`
+- `Meta-Llama-3.2-3B-Instruct (aliases: meta-llama/Llama-3.2-3B-Instruct)`
+- `Meta-Llama-3.3-70B-Instruct (aliases: meta-llama/Llama-3.3-70B-Instruct)`
+- `Llama-3.2-11B-Vision-Instruct (aliases: meta-llama/Llama-3.2-11B-Vision-Instruct)`
+- `Llama-3.2-90B-Vision-Instruct (aliases: meta-llama/Llama-3.2-90B-Vision-Instruct)`
+- `Meta-Llama-Guard-3-8B (aliases: meta-llama/Llama-Guard-3-8B)`
 
 
 ### Prerequisite: API Keys
@@ -59,9 +59,10 @@ You can do this via Conda (build code) or Docker which has a pre-built image.
 This method allows you to get started quickly without having to build the distribution code.
 
 ```bash
-LLAMA_STACK_PORT=5001
+LLAMA_STACK_PORT=8321
 docker run \
   -it \
+  --pull always \
   -p $LLAMA_STACK_PORT:$LLAMA_STACK_PORT \
   llamastack/distribution-sambanova \
   --port $LLAMA_STACK_PORT \
